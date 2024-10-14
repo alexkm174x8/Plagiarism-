@@ -5,84 +5,77 @@ import (
 	"sort"
 )
 
-type Suffix struct {
-	Index int
-	Text  string
+type SuffixArrayEntry struct {
+	index  int
+	suffix string
 }
 
-func BuildSuffixArray(text string) []int {
-	n := len(text)
-	suffixes := make([]Suffix, n)
+func ConstruirSuffixArray(texto string) []int {
+	n := len(texto)
+	suffixes := make([]SuffixArrayEntry, n)
 
 	for i := 0; i < n; i++ {
-		suffixes[i] = Suffix{Index: i, Text: text[i:]}
+		suffixes[i] = SuffixArrayEntry{i, texto[i:]}
 	}
 
 	sort.Slice(suffixes, func(i, j int) bool {
-		return suffixes[i].Text < suffixes[j].Text
+		return suffixes[i].suffix < suffixes[j].suffix
 	})
 
 	suffixArray := make([]int, n)
 	for i := 0; i < n; i++ {
-		suffixArray[i] = suffixes[i].Index
+		suffixArray[i] = suffixes[i].index
 	}
 
 	return suffixArray
 }
 
-func BuildLCPArray(text string, suffixArray []int) []int {
-	n := len(text)
-	rank := make([]int, n)
+func LCPArray(texto string, suffixArray []int) []int {
+	n := len(suffixArray)
 	lcp := make([]int, n)
+	invSuffix := make([]int, n)
 
 	for i := 0; i < n; i++ {
-		rank[suffixArray[i]] = i
+		invSuffix[suffixArray[i]] = i
 	}
 
-	h := 0
+	k := 0
 	for i := 0; i < n; i++ {
-		if rank[i] > 0 {
-			j := suffixArray[rank[i]-1]
-			for i+h < n && j+h < n && text[i+h] == text[j+h] {
-				h++
-			}
-			lcp[rank[i]] = h
-			if h > 0 {
-				h--
-			}
+		if invSuffix[i] == n-1 {
+			k = 0
+			continue
+		}
+
+		j := suffixArray[invSuffix[i]+1]
+		for i+k < n && j+k < n && texto[i+k] == texto[j+k] {
+			k++
+		}
+
+		lcp[invSuffix[i]] = k
+		if k > 0 {
+			k--
 		}
 	}
 
 	return lcp
 }
 
-func CompareDocuments(text1, text2 string) float64 {
-	combinedText := text1 + "#" + text2
-	suffixArray := BuildSuffixArray(combinedText)
-	lcpArray := BuildLCPArray(combinedText, suffixArray)
+func CompararTextos(texto1, texto2 string) {
+	fmt.Println("Texto 1:", texto1)
+	fmt.Println("Texto 2:", texto2)
 
-	maxLCP := 0
-	for i := 1; i < len(lcpArray); i++ {
-		if (suffixArray[i-1] < len(text1) && suffixArray[i] > len(text1)) || (suffixArray[i-1] > len(text1) && suffixArray[i] < len(text1)) {
-			if lcpArray[i] > maxLCP {
-				maxLCP = lcpArray[i]
-			}
-		}
-	}
+	texto := texto1 + "$" + texto2 + "#"
+	fmt.Println("\nTexto concatenado:", texto)
 
-	minLength := len(text1)
-	if len(text2) < minLength {
-		minLength = len(text2)
-	}
-	similarity := float64(maxLCP) / float64(minLength) * 100.0
+	suffixArray := ConstruirSuffixArray(texto)
+	fmt.Println("\nSuffix Array:", suffixArray)
 
-	return similarity
+	lcp := LCPArray(texto, suffixArray)
+	fmt.Println("\nLCP Array:", lcp)
 }
 
 func main() {
-	doc1 := "Este es un documento de ejemplo."
-	doc2 := "Este es otro documento de prueba."
-
-	similarity := CompareDocuments(doc1, doc2)
-	fmt.Printf("La similitud entre los documentos es: %.2f%%\n", similarity)
+	texto1 := "banana"
+	texto2 := "bandana"
+	CompararTextos(texto1, texto2)
 }
