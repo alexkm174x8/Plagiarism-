@@ -49,7 +49,7 @@ func buildSuffixArray(text string) []int {
 }
 
 // Función para encontrar la Longest Common Substring (LCS)
-func longestCommonSubstring(text1, text2 string) string {
+func longestCommonSubstring(text1, text2 string) (string, int) {
 	// Unimos las dos cadenas separadas por un símbolo único
 	combined := text1 + "#" + text2 + "$"
 	suffixArray := buildSuffixArray(combined)
@@ -69,7 +69,7 @@ func longestCommonSubstring(text1, text2 string) string {
 		}
 	}
 
-	return longest
+	return longest, len(longest)
 }
 
 // Función auxiliar para encontrar el prefijo común más largo entre dos cadenas
@@ -93,8 +93,16 @@ func highlightCommonSubstring(text, commonSubstring string) string {
 	return highlighted
 }
 
+// Estructura para almacenar la similitud y los pares de textos
+type TextPair struct {
+	File1       string
+	File2       string
+	Similarity  float64
+	Highlighted string
+}
+
 // Función para generar el archivo HTML que muestre los textos con las subcadenas comunes resaltadas
-func generateHTML(texts map[string]string, pairs [][]string) {
+func generateHTML(pairs []TextPair) {
 	html := `<html>
 <head>
 <title>Detección de Plagio</title>
@@ -108,20 +116,7 @@ pre { border: 1px solid #000; padding: 10px; background-color: #f4f4f4; }
 <h1>Detección de Plagio - Comparación de Textos</h1>`
 
 	for _, pair := range pairs {
-		file1 := pair[0]
-		file2 := pair[1]
-		text1 := texts[file1]
-		text2 := texts[file2]
-
-		// Encontrar la subcadena común más larga
-		lcs := longestCommonSubstring(text1, text2)
-
-		// Resaltar la subcadena en ambos textos
-		highlightedText1 := highlightCommonSubstring(text1, lcs)
-		highlightedText2 := highlightCommonSubstring(text2, lcs)
-
-		// Agregar los textos resaltados al archivo HTML
-		html += fmt.Sprintf("<h2>%s vs %s</h2><pre>%s</pre><pre>%s</pre>", filepath.Base(file1), filepath.Base(file2), highlightedText1, highlightedText2)
+		html += fmt.Sprintf("<h2>%s vs %s</h2><pre>%s</pre>", filepath.Base(pair.File1), filepath.Base(pair.File2), pair.Highlighted)
 	}
 
 	html += "</body></html>"
@@ -142,18 +137,55 @@ func calculateSimilarityAndHighlight(texts map[string]string) {
 		keys = append(keys, key)
 	}
 
-	// Pares de textos a comparar
-	pairs := [][]string{}
+	var pairs []TextPair
 
 	// Calcular la similitud entre cada par de textos
 	for i := 0; i < len(keys); i++ {
 		for j := i + 1; j < len(keys); j++ {
-			pairs = append(pairs, []string{keys[i], keys[j]})
+			text1 := texts[keys[i]]
+			text2 := texts[keys[j]]
+
+			// Encontrar la subcadena común más larga
+			lcs, lcsLength := longestCommonSubstring(text1, text2)
+
+			// Calcular la similitud como proporción
+			longestLength := max(len(text1), len(text2))
+			similarity := float64(lcsLength) / float64(longestLength)
+
+			// Resaltar la subcadena en ambos textos
+			highlightedText1 := highlightCommonSubstring(text1, lcs)
+			highlightedText2 := highlightCommonSubstring(text2, lcs)
+
+			// Agregar la pareja con su similitud
+			pairs = append(pairs, TextPair{
+				File1:       keys[i],
+				File2:       keys[j],
+				Similarity:  similarity,
+				Highlighted: fmt.Sprintf("<h3>Similitud: %.2f</h3><pre>%s</pre><pre>%s</pre>", similarity, highlightedText1, highlightedText2),
+			})
 		}
 	}
 
+	// Ordenar los pares por similitud
+	sort.Slice(pairs, func(i, j int) bool {
+		return pairs[i].Similarity > pairs[j].Similarity
+	})
+
+	// Tomar solo los 10 más similares
+	if len(pairs) > 10 {
+		pairs = pairs[:10]
+	}
+
 	// Generar el archivo HTML con los textos resaltados
-	generateHTML(texts, pairs)
+	generateHTML(pairs)
+}
+
+// Función auxiliar para obtener el máximo de dos enteros
+func max(a, b int) int {
+	if a > b {
+		return a
+	}
+	return b
 }
 
 func main() {
