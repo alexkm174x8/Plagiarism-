@@ -274,6 +274,8 @@ description {
 <h1>Plagiarism Detector •*.✸ </h1>
 <h3 style="text-align: center;">Web App in Golang that compares the content of different texts about the same topic, calculating and highlighting their similarity using a Suffix Array that retrieves the Longest Common Substring (LCS).</h3>`
 
+	counter := 1
+
 	// Iteramos sobre cada par de textos y agregamos la comparación al HTML
 	for _, pair := range pairs {
 		splitIndex := strings.Index(pair.Highlighted, "</pre><pre>") + 6
@@ -282,7 +284,7 @@ description {
 
 		html += fmt.Sprintf(`
         <div class="container">
-            <description>%s vs %s</description>
+            <description>%d. %s vs %s</description>
             <h2>Similarity: %.2f</h2>
             <div class="text-container">
                 <div class="text-content">
@@ -293,7 +295,9 @@ description {
                 </div>
             </div>
         </div>`,
-			filepath.Base(pair.File1), filepath.Base(pair.File2), pair.Similarity, firstText, secondText)
+			counter, filepath.Base(pair.File1), filepath.Base(pair.File2), pair.Similarity, firstText, secondText)
+
+		counter++
 	}
 
 	html += "</body></html>"
