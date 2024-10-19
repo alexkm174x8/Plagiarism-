@@ -155,10 +155,10 @@ h2 {
         html += fmt.Sprintf(`
         <div class="container">
             <h2>%s vs %s</h2>
-            <h3>Similitud: %.2f</h3>
+            <h3>Similitud: %.2f</h3> <!-- Similarity is printed here under the title only -->
             <div class="text-container">
                 <div class="text-content">
-                    <pre>%s</pre>
+                    <pre>%s</pre> <!-- Only text content is printed here -->
                 </div>
                 <div class="text-content">
                     <pre>%s</pre>
@@ -176,10 +176,6 @@ h2 {
     }
     fmt.Println("Archivo HTML generado: plagiarism_report.html")
 }
-
-
-
-
 
 // Función para calcular la similitud y generar los pares de texto
 func calculateSimilarityAndHighlight(texts map[string]string) {
@@ -201,7 +197,7 @@ func calculateSimilarityAndHighlight(texts map[string]string) {
                 File1:       keys[i],
                 File2:       keys[j],
                 Similarity:  similarity,
-                Highlighted: fmt.Sprintf("<h3>Similitud: %.2f</h3><pre>%s</pre><pre>%s</pre>", similarity, highlightedText1, highlightedText2),
+                Highlighted: fmt.Sprintf("<pre>%s</pre><pre>%s</pre>", highlightedText1, highlightedText2),
             })
         }
     }
