@@ -95,55 +95,78 @@ func generateHTML(pairs []TextPair) {
 <head>
 <title>Plagiarism Detector</title>
 <style>
-body { 
-    background-color: #ffa1d7; 
-    font-family: Helvetica, sans-serif; 
-    color: #d3163b; 
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+
+body {
+   background-color: #ffa1d7;
+   font-family: Helvetica, sans-serif;
+   color: #d3163b;
+   margin: 0;
+   padding: 0;
+   box-sizing: border-box;
 }
 
 .container {
-    max-width: 1370px; 
-    margin: 20px auto; 
-    padding: 20px; 
-    border: 1px solid #d3163b; 
-    background-color: #ffffff; 
-    box-sizing: border-box; /* Ensure padding fits within width */
+   max-width: 1370px;
+   margin: 20px auto;
+   padding: 20px;
+   border: 1px solid #d3163b;
+   background-color: #ffffff;
+   box-sizing: border-box; /* Ensure padding fits within width */
 }
 
-pre { 
-    border: 1px solid #d3163b; 
-    padding: 10px; 
-    background-color: #f4f4f4; 
-    width: 100%; 
-    white-space: pre-wrap; 
-    word-wrap: break-word;
-    box-sizing: border-box;
+pre {
+   border: 1px solid #d3163b;
+   padding: 10px;
+   background-color: #f4f4f4;
+   width: 100%;
+   white-space: pre-wrap;
+   word-wrap: break-word;
+   box-sizing: border-box;
 }
 
-h2 { 
-    margin-bottom: 5px; 
-    font-size: 20px;
+h1 {
+   font-size: 60px;
+   text-align: center;
+   margin-top: 30px;
+}
+
+h2 {
+   margin-top: 0px;
+   margin-bottom: 5px;
+   font-size: 20px;
+}
+
+h3 {
+   margin-top: 0px;
+   font-size: 22px;
+   margin-bottom: 45px;
+   margin-left: 60px;
+   margin-right: 60px;
+}
+
+description {
+   margin-top: 0px;
+   font-size: 25px;
+   margin-bottom: 45px;
+   font-weight: bold;
 }
 
 .similarity-box {
-    margin-bottom: 20px;
+   margin-bottom: 20px;
 }
 
 .text-container {
-    display: block; /* Stack the contents vertically */
+   display: block; /* Stack the contents vertically */
 }
 
-.highlight { 
-    background-color: yellow; 
-    color: #d3163b; 
+.highlight {
+   background-color: yellow;
+   color: #d3163b;
 }
 </style>
 </head>
 <body>
-<h1 style="text-align: center;">Plagiarism Detector</h1>
+<h1>Plagiarism Detector</h1>
 <h3 style="text-align: center;">Web App in Golang that compares the content of different texts about the same topic, calculating and highlighting their similarity using a Suffix Array that retrieves the Longest Common Substring (LCS).</h3>`
 
     for _, pair := range pairs {
@@ -154,17 +177,17 @@ h2 {
 
         html += fmt.Sprintf(`
         <div class="container">
-            <h2>%s vs %s</h2>
-            <h3>Similitud: %.2f</h3> <!-- Similarity is printed here under the title only -->
+            <description>%s vs %s</description>
+            <h2>Similitud: %.2f</h2>
             <div class="text-container">
                 <div class="text-content">
-                    <pre>%s</pre> <!-- Only text content is printed here -->
+                    <pre>%s</pre>
                 </div>
                 <div class="text-content">
                     <pre>%s</pre>
                 </div>
             </div>
-        </div>`, 
+        </div>`,
             filepath.Base(pair.File1), filepath.Base(pair.File2), pair.Similarity, firstText, secondText)
     }
 
@@ -176,6 +199,7 @@ h2 {
     }
     fmt.Println("Archivo HTML generado: plagiarism_report.html")
 }
+
 
 // Función para calcular la similitud y generar los pares de texto
 func calculateSimilarityAndHighlight(texts map[string]string) {
