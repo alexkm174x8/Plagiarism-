@@ -5,7 +5,6 @@ import (
 	"io/ioutil"
 	"log"
 	"path/filepath"
-	"sort"
 	"strings"
 )
 
@@ -30,6 +29,41 @@ func readFilesFromDir(dirPath string) (map[string]string, error) {
 	return texts, nil
 }
 
+// Implementación de Merge Sort para ordenar sufijos lexicográficamente
+func mergeSortSuffixes(suffixes []string) []string {
+	if len(suffixes) <= 1 {
+		return suffixes
+	}
+
+	mid := len(suffixes) / 2
+	left := mergeSortSuffixes(suffixes[:mid])
+	right := mergeSortSuffixes(suffixes[mid:])
+
+	return merge(left, right)
+}
+
+// Función auxiliar para mezclar dos sublistas en orden lexicográfico
+func merge(left, right []string) []string {
+	result := []string{}
+	i, j := 0, 0
+
+	for i < len(left) && j < len(right) {
+		if left[i] <= right[j] {
+			result = append(result, left[i])
+			i++
+		} else {
+			result = append(result, right[j])
+			j++
+		}
+	}
+
+	// Añadir los elementos restantes
+	result = append(result, left[i:]...)
+	result = append(result, right[j:]...)
+
+	return result
+}
+
 // Función para construir el Suffix Array de una cadena
 // Un Suffix Array es un arreglo que contiene los índices de los sufijos de la cadena en orden lexicográfico
 func buildSuffixArray(text string) []int {
@@ -42,12 +76,12 @@ func buildSuffixArray(text string) []int {
 		suffixes[i] = text[i:] // Cada sufijo comienza desde la posición i
 	}
 
-	// Ordenamos los sufijos lexicográficamente
-	sort.Strings(suffixes)
+	// Ordenamos los sufijos lexicográficamente usando Merge Sort
+	sortedSuffixes := mergeSortSuffixes(suffixes)
 
 	// Guardamos los índices de los sufijos en el arreglo de Suffix Array
 	for i := 0; i < n; i++ {
-		suffixArray[i] = n - len(suffixes[i])
+		suffixArray[i] = n - len(sortedSuffixes[i])
 	}
 
 	return suffixArray
@@ -108,6 +142,41 @@ type TextPair struct {
 	File2       string
 	Similarity  float64
 	Highlighted string
+}
+
+// Implementación de Merge Sort para ordenar pares de textos según su similitud
+func mergeSortPairs(pairs []TextPair) []TextPair {
+	if len(pairs) <= 1 {
+		return pairs
+	}
+
+	mid := len(pairs) / 2
+	left := mergeSortPairs(pairs[:mid])
+	right := mergeSortPairs(pairs[mid:])
+
+	return mergePairs(left, right)
+}
+
+// Función auxiliar para mezclar dos sublistas de TextPair en orden de similitud
+func mergePairs(left, right []TextPair) []TextPair {
+	result := []TextPair{}
+	i, j := 0, 0
+
+	for i < len(left) && j < len(right) {
+		if left[i].Similarity >= right[j].Similarity {
+			result = append(result, left[i])
+			i++
+		} else {
+			result = append(result, right[j])
+			j++
+		}
+	}
+
+	// Añadir los elementos restantes
+	result = append(result, left[i:]...)
+	result = append(result, right[j:]...)
+
+	return result
 }
 
 // Función para generar el archivo HTML que muestre los textos con las subcadenas comunes resaltadas
@@ -260,14 +329,14 @@ func calculateSimilarityAndHighlight(texts map[string]string) {
 			})
 		}
 	}
-	// Ordenamos los pares por similitud y seleccionamos los 10 más similares
-	sort.Slice(pairs, func(i, j int) bool {
-		return pairs[i].Similarity > pairs[j].Similarity
-	})
-	if len(pairs) > 10 {
-		pairs = pairs[:10]
+	// Ordenamos los pares por similitud utilizando Merge Sort
+	sortedPairs := mergeSortPairs(pairs)
+
+	// Tomamos los 10 pares más similares
+	if len(sortedPairs) > 10 {
+		sortedPairs = sortedPairs[:10]
 	}
-	generateHTML(pairs)
+	generateHTML(sortedPairs)
 }
 
 // Función auxiliar para obtener el máximo de dos enteros
