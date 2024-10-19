@@ -3,9 +3,20 @@
 <title>Plagiarism Detector</title>
 <style>
 
+@font-face {
+   font-family: Nohemi;
+   src: url("Nohemi-Medium.otf")
+}
+
+
+@font-face {
+   font-family: OffBit;
+   src: url("OffBit.ttf")
+}
+
 body {
    background-color: #ffa1d7;
-   font-family: Helvetica, sans-serif;
+   font-family: Nohemi;
    color: #d3163b;
    margin: 0;
    padding: 0;
@@ -17,14 +28,14 @@ body {
    margin: 20px auto;
    padding: 20px;
    border: 1px solid #d3163b;
-   background-color: #ffffff;
+   background-color: #fdf2f5;
    box-sizing: border-box; /* Ensure padding fits within width */
 }
 
 pre {
    border: 1px solid #d3163b;
    padding: 10px;
-   background-color: #f4f4f4;
+   background-color: #f8f7f8; 
    width: 100%;
    white-space: pre-wrap;
    word-wrap: break-word;
@@ -34,11 +45,12 @@ pre {
 h1 {
    font-size: 60px;
    text-align: center;
-   margin-top: 30px;
+   margin-top: 50px;
+   font-family: OffBit;
 }
 
 h2 {
-   margin-top: 0px;
+   margin-top: 5px;
    margin-bottom: 5px;
    font-size: 20px;
 }
@@ -55,7 +67,7 @@ description {
    margin-top: 0px;
    font-size: 25px;
    margin-bottom: 45px;
-   font-weight: bold;
+   font-family: OffBit;
 }
 
 .similarity-box {
@@ -73,16 +85,12 @@ description {
 </style>
 </head>
 <body>
-<h1>Plagiarism Detector</h1>
+<h1>Plagiarism Detector •*.✸ </h1>
 <h3 style="text-align: center;">Web App in Golang that compares the content of different texts about the same topic, calculating and highlighting their similarity using a Suffix Array that retrieves the Longest Common Substring (LCS).</h3>
         <div class="container">
-            <description>g0pE_taske.txt vs g2pB_taske.txt</description>
-            <h2>Similitud: 0.26</h2>
+            <description>g2pB_taske.txt vs g0pE_taske.txt</description>
+            <h2>Similarity: 0.26</h2>
             <div class="text-container">
-                <div class="text-content">
-                    <pre><pre>dynamic programming is a method of solving problems that exhibit the properties of overlapping subproblems and optimal substructure (described below). The method takes much less time than naive methods. <span style="background-color: yellow; color: #d3163b;">The word "programming" in "dynamic programming" has no particular connection to computer programming at all, and instead comes from the term "mathematical programming", a synonym for optimization. Thus, the "program" is the optimal plan for action that is produced. For instance, a finalized schedule of events at an exhibition is sometimes called a program. Programming, in this sense, means finding an acceptable plan of action, an algorithm.</span> 
-</pre></pre>
-                </div>
                 <div class="text-content">
                     <pre><pre>
 In mathematics and computer science, dynamic programming is a method of solving problems, that exhibit the properties of overlapping subproblems and optimal substructure. The method takes much less time than naive methods.
@@ -97,12 +105,20 @@ In general, we can solve a problem with optimal substructure using a three-step 
 The subproblems are, themselves, solved by dividing them into sub-subproblems, and so on, until we reach some simple case that is solvable in constant time.
 </pre></pre>
                 </div>
+                <div class="text-content">
+                    <pre><pre>dynamic programming is a method of solving problems that exhibit the properties of overlapping subproblems and optimal substructure (described below). The method takes much less time than naive methods. <span style="background-color: yellow; color: #d3163b;">The word "programming" in "dynamic programming" has no particular connection to computer programming at all, and instead comes from the term "mathematical programming", a synonym for optimization. Thus, the "program" is the optimal plan for action that is produced. For instance, a finalized schedule of events at an exhibition is sometimes called a program. Programming, in this sense, means finding an acceptable plan of action, an algorithm.</span> 
+</pre></pre>
+                </div>
             </div>
         </div>
         <div class="container">
-            <description>g4pC_taska.txt vs g0pE_taska.txt</description>
-            <h2>Similitud: 0.26</h2>
+            <description>g0pE_taska.txt vs g4pC_taska.txt</description>
+            <h2>Similarity: 0.26</h2>
             <div class="text-container">
+                <div class="text-content">
+                    <pre><pre>In object-oriented programming, inheritance is a way to form new classes (instances of which are called objects) using classes that have already been defined. The inheritance concept was invented in 1967 for Simula. The new classes, known as derived classes, take over (or inherit) attribute and behaviour of the pre-existing classes, which are referred to as base classes (or ancestor classes). It is intended to help reuse existing code with little or no modification. Inheritance provides the support for representation by categorization in computer languages. Categorization is a powerful mechanism number of information processing, crucial to human learning by means of generalization (what is known about specific entities is applied to a wider group given a belongs relation can be established) and cognitive economy (less information needs to be stored about each specific entity, only its particularities). <span style="background-color: yellow; color: #d3163b;">Inheritance is also sometimes called generalization, because the is-a relationships represent a hierarchy between classes of objects. For instance, a "fruit" is a generalization of "apple", "orange", "mango" and many others. One can consider fruit to be an abstraction of apple, orange, etc. Conversely, since apples are fruit (i.e., an apple is-a fruit), apples may naturally inherit all the properties common to all fruit, such as being a fleshy container for the seed of a plant.</span> An advantage of inheritance is that modules with sufficiently similar interfaces can share a lot of code, reducing the complexity of the program. Inheritance therefore has another view, a dual, called polymorphism, which describes many pieces of code being controlled by shared control code. Inheritance is typically accomplished either by overriding (replacing) one or more methods exposed by ancestor, or by adding new methods to those exposed by an ancestor. 
+</pre></pre>
+                </div>
                 <div class="text-content">
                     <pre><pre>In object-oriented programming, inheritance is a way to form new classes (instances of which are called objects) using classes that have already been defined. The inheritance concept was invented in 1967 for Simula
 Inheritance provides the support for representation by categorization in computer languages. Categorization is a powerful mechanism number of information processing, crucial to human learning by means of generalization and cognitive economy (less information needs to be stored about each specific entity, only its particularities).
@@ -113,30 +129,12 @@ Inheritance is typically accomplished either by overriding (replacing) one or mo
 Complex inheritance, or inheritance used within a design that is not sufficiently mature, may lead to the Yo-yo problem.
 </pre></pre>
                 </div>
-                <div class="text-content">
-                    <pre><pre>In object-oriented programming, inheritance is a way to form new classes (instances of which are called objects) using classes that have already been defined. The inheritance concept was invented in 1967 for Simula. The new classes, known as derived classes, take over (or inherit) attribute and behaviour of the pre-existing classes, which are referred to as base classes (or ancestor classes). It is intended to help reuse existing code with little or no modification. Inheritance provides the support for representation by categorization in computer languages. Categorization is a powerful mechanism number of information processing, crucial to human learning by means of generalization (what is known about specific entities is applied to a wider group given a belongs relation can be established) and cognitive economy (less information needs to be stored about each specific entity, only its particularities). <span style="background-color: yellow; color: #d3163b;">Inheritance is also sometimes called generalization, because the is-a relationships represent a hierarchy between classes of objects. For instance, a "fruit" is a generalization of "apple", "orange", "mango" and many others. One can consider fruit to be an abstraction of apple, orange, etc. Conversely, since apples are fruit (i.e., an apple is-a fruit), apples may naturally inherit all the properties common to all fruit, such as being a fleshy container for the seed of a plant.</span> An advantage of inheritance is that modules with sufficiently similar interfaces can share a lot of code, reducing the complexity of the program. Inheritance therefore has another view, a dual, called polymorphism, which describes many pieces of code being controlled by shared control code. Inheritance is typically accomplished either by overriding (replacing) one or more methods exposed by ancestor, or by adding new methods to those exposed by an ancestor. 
-</pre></pre>
-                </div>
             </div>
         </div>
         <div class="container">
-            <description>orig_taske.txt vs g2pB_taske.txt</description>
-            <h2>Similitud: 0.25</h2>
+            <description>g2pB_taske.txt vs orig_taske.txt</description>
+            <h2>Similarity: 0.25</h2>
             <div class="text-container">
-                <div class="text-content">
-                    <pre><pre>In mathematics and computer science, dynamic programming is a method of solving problems that exhibit the properties of overlapping subproblems and optimal substructure (described below). The method takes much less time than naive methods.
-The term was originally used in the 1940s by Richard Bellman to describe the process of solving problems where one needs to find the best decisions one after another. By 1953, he had refined this to the modern meaning. The field was founded as a systems analysis and engineering topic that is recognized by the IEEE. Bellman's contribution is remembered in the name of the Bellman equation, a central result of dynamic programming which restates an optimization problem in recursive form.<span style="background-color: yellow; color: #d3163b;">
-The word "programming" in "dynamic programming" has no particular connection to computer programming at all, and instead comes from the term "mathematical programming", a synonym for optimization. Thus, the "program" is the optimal plan for action that is produced. For instance, a finalized schedule of events at an exhibition is sometimes called a program. Programming, in this sense, means finding an acceptable plan of action, an algorithm.
-Optimal substructure means that optimal solutions of subproblems can be used to find the optimal solutions of the overall problem. For example, the shortest path to a goal from a vertex in a graph can be found by first computing the shortest path to the goal from all adjacent vertices, and then using this to pick the best overall path</span>, as shown in Figure 1. In general, we can solve a problem with optimal substructure using a three-step process:
-   1. Break the problem into smaller subproblems.
-   2. Solve these problems optimally using this three-step process recursively.
-   3. Use these optimal solutions to construct an optimal solution for the original problem.
-The subproblems are, themselves, solved by dividing them into sub-subproblems, and so on, until we reach some simple case that is solvable in constant time.
-Figure 2. The subproblem graph for the Fibonacci sequence. That it is not a tree but a DAG indicates overlapping subproblems.
-To say that a problem has overlapping subproblems is to say that the same subproblems are used to solve many different larger problems. For example, in the Fibonacci sequence, F3 = F1 + F2 and F4 = F2 + F3 — computing each number involves computing F2. Because both F3 and F4 are needed to compute F5, a naive approach to computing F5 may end up computing F2 twice or more. This applies whenever overlapping subproblems are present: a naive approach may waste time recomputing optimal solutions to subproblems it has already solved.
-In order to avoid this, we instead save the solutions to problems we have already solved. Then, if we need to solve the same problem later, we can retrieve and reuse our already-computed solution. This approach is called memoization (not memorization, although this term also fits). If we are sure we won't need a particular solution anymore, we can throw it away to save space. In some cases, we can even compute the solutions to subproblems we know that we'll need in advance.
-</pre></pre>
-                </div>
                 <div class="text-content">
                     <pre><pre>
 In mathematics and computer science, dynamic programming is a method of solving problems, that exhibit the properties of overlapping subproblems and optimal substructure. The method takes much less time than naive methods.
@@ -151,11 +149,25 @@ In general, we can solve a problem with optimal substructure using a three-step 
 The subproblems are, themselves, solved by dividing them into sub-subproblems, and so on, until we reach some simple case that is solvable in constant time.
 </pre></pre>
                 </div>
+                <div class="text-content">
+                    <pre><pre>In mathematics and computer science, dynamic programming is a method of solving problems that exhibit the properties of overlapping subproblems and optimal substructure (described below). The method takes much less time than naive methods.
+The term was originally used in the 1940s by Richard Bellman to describe the process of solving problems where one needs to find the best decisions one after another. By 1953, he had refined this to the modern meaning. The field was founded as a systems analysis and engineering topic that is recognized by the IEEE. Bellman's contribution is remembered in the name of the Bellman equation, a central result of dynamic programming which restates an optimization problem in recursive form.<span style="background-color: yellow; color: #d3163b;">
+The word "programming" in "dynamic programming" has no particular connection to computer programming at all, and instead comes from the term "mathematical programming", a synonym for optimization. Thus, the "program" is the optimal plan for action that is produced. For instance, a finalized schedule of events at an exhibition is sometimes called a program. Programming, in this sense, means finding an acceptable plan of action, an algorithm.
+Optimal substructure means that optimal solutions of subproblems can be used to find the optimal solutions of the overall problem. For example, the shortest path to a goal from a vertex in a graph can be found by first computing the shortest path to the goal from all adjacent vertices, and then using this to pick the best overall path</span>, as shown in Figure 1. In general, we can solve a problem with optimal substructure using a three-step process:
+   1. Break the problem into smaller subproblems.
+   2. Solve these problems optimally using this three-step process recursively.
+   3. Use these optimal solutions to construct an optimal solution for the original problem.
+The subproblems are, themselves, solved by dividing them into sub-subproblems, and so on, until we reach some simple case that is solvable in constant time.
+Figure 2. The subproblem graph for the Fibonacci sequence. That it is not a tree but a DAG indicates overlapping subproblems.
+To say that a problem has overlapping subproblems is to say that the same subproblems are used to solve many different larger problems. For example, in the Fibonacci sequence, F3 = F1 + F2 and F4 = F2 + F3 — computing each number involves computing F2. Because both F3 and F4 are needed to compute F5, a naive approach to computing F5 may end up computing F2 twice or more. This applies whenever overlapping subproblems are present: a naive approach may waste time recomputing optimal solutions to subproblems it has already solved.
+In order to avoid this, we instead save the solutions to problems we have already solved. Then, if we need to solve the same problem later, we can retrieve and reuse our already-computed solution. This approach is called memoization (not memorization, although this term also fits). If we are sure we won't need a particular solution anymore, we can throw it away to save space. In some cases, we can even compute the solutions to subproblems we know that we'll need in advance.
+</pre></pre>
+                </div>
             </div>
         </div>
         <div class="container">
             <description>orig_taskd.txt vs g3pA_taskd.txt</description>
-            <h2>Similitud: 0.25</h2>
+            <h2>Similarity: 0.25</h2>
             <div class="text-container">
                 <div class="text-content">
                     <pre><pre>In probability theory, Bayes' theorem (often called Bayes' law after Rev Thomas Bayes) relates the conditional and marginal probabilities of two random events. It is often used to compute posterior probabilities given observations. For example, a patient may be observed to have certain symptoms. Bayes' theorem can be used to compute the probability that a proposed diagnosis is correct, given that observation. (See example 2)
@@ -191,7 +203,7 @@ Intuitively, Bayes' theorem in this form describes the way in which one's belief
         </div>
         <div class="container">
             <description>g4pC_taska.txt vs orig_taska.txt</description>
-            <h2>Similitud: 0.24</h2>
+            <h2>Similarity: 0.24</h2>
             <div class="text-container">
                 <div class="text-content">
                     <pre><pre>In object-oriented programming, inheritance is a way to form new classes (instances of which are called objects) using classes that have already been defined. The inheritance concept was invented in 1967 for Simula
@@ -221,7 +233,7 @@ Complex inheritance, or inheritance used within a design that is not sufficientl
         </div>
         <div class="container">
             <description>g0pE_taska.txt vs orig_taska.txt</description>
-            <h2>Similitud: 0.24</h2>
+            <h2>Similarity: 0.24</h2>
             <div class="text-container">
                 <div class="text-content">
                     <pre><pre>In object-oriented programming, inheritance is a way to form new classes (instances of which are called objects) using classes that have already been defined. The inheritance concept was invented in 1967 for Simula. The new classes, known as derived classes, take over (or inherit) attribute and behaviour of the pre-existing classes, which are referred to as base classes (or ancestor classes). It is intended to help reuse existing code with little or no modification. Inheritance provides the support for representation by categorization in computer languages. Categorization is a powerful mechanism number of information processing, crucial to human learning by means of generalization (what is known about specific entities is applied to a wider group given a belongs relation can be established) and cognitive economy (less information needs to be stored about each specific entity, only its particularities). <span style="background-color: yellow; color: #d3163b;">Inheritance is also sometimes called generalization, because the is-a relationships represent a hierarchy between classes of objects. For instance, a "fruit" is a generalization of "apple", "orange", "mango" and many others. One can consider fruit to be an abstraction of apple, orange, etc. Conversely, since apples are fruit (i.e., an apple is-a fruit), apples may naturally inherit all the properties common to all fruit, such as being a fleshy container for the seed of a plant.</span> An advantage of inheritance is that modules with sufficiently similar interfaces can share a lot of code, reducing the complexity of the program. Inheritance therefore has another view, a dual, called polymorphism, which describes many pieces of code being controlled by shared control code. Inheritance is typically accomplished either by overriding (replacing) one or more methods exposed by ancestor, or by adding new methods to those exposed by an ancestor. 
@@ -245,7 +257,7 @@ Complex inheritance, or inheritance used within a design that is not sufficientl
         </div>
         <div class="container">
             <description>orig_taskd.txt vs g1pA_taskd.txt</description>
-            <h2>Similitud: 0.23</h2>
+            <h2>Similarity: 0.23</h2>
             <div class="text-container">
                 <div class="text-content">
                     <pre><pre>In probability theory, Bayes' theorem (often called Bayes' law after Rev Thomas Bayes) relates the conditional and marginal probabilities of two random events. It is often used to compute posterior probabilities given observations. For example, a patient may be observed to have certain symptoms. Bayes' theorem can be used to compute the probability that a proposed diagnosis is correct, given that observation. (See example 2)
@@ -270,7 +282,7 @@ Note that the expression says nothing about the order in which the events occurr
         </div>
         <div class="container">
             <description>g0pE_taske.txt vs g1pB_taske.txt</description>
-            <h2>Similitud: 0.23</h2>
+            <h2>Similarity: 0.23</h2>
             <div class="text-container">
                 <div class="text-content">
                     <pre><pre>dynamic programming is a method of solving problems that exhibit the properties of overlapping subproblems and optimal substructure (described below). The method takes much less time than naive methods<span style="background-color: yellow; color: #d3163b;">. The word "programming" in "dynamic programming" has no particular connection to computer programming at all, and instead comes from the term "mathematical programming", a synonym for optimization. Thus, the "program" is the optimal plan for action that is produced. For instance, a finalized schedule of events at an exhibition is sometimes called a program. Programming, in this sense, means finding an acceptable plan of action, an algorithm.</span> 
@@ -286,16 +298,9 @@ Some programming languages can automatically memorize the result of a function c
             </div>
         </div>
         <div class="container">
-            <description>g1pB_taske.txt vs g2pB_taske.txt</description>
-            <h2>Similitud: 0.23</h2>
+            <description>g2pB_taske.txt vs g1pB_taske.txt</description>
+            <h2>Similarity: 0.23</h2>
             <div class="text-container">
-                <div class="text-content">
-                    <pre><pre>In mathematics and computer science, dynamic programming is a method of solving problems that exhibit the properties of overlapping sub problems and optimal substructure. The term was originally used in the 1940s by Richard Bellman to describe the process of solving problems where one needs to find the best decisions one after another. By 1953, he had refined this to the modern meaning. Bellman's contribution is remembered in the name of the Bellman equation, a central result of dynamic programming which restates an optimization problem in recursive form. <span style="background-color: yellow; color: #d3163b;">The word "programming" in "dynamic programming" has no particular connection to computer programming at all, and instead comes from the term "mathematical programming", a synonym for optimization. Thus, the "program" is the optimal plan for action that is produced. For instance, a finalized schedule of events at an exhibition is sometimes called a program. Programming, in this sense, means finding an acceptable plan of action, an algorithm.
-</span>Dynamic programming usually takes one of two approaches, the top-down approach, the problem is broken into sub problems, and these sub problems are solved and the solutions remembered, in case they need to be solved again. This is recursion and memorization combined together and the bottom-up approach, all sub problems that might be needed are solved in advance and then used to build up solutions to larger problems. This approach is slightly better in stack space and number of function calls, but it is sometimes not intuitive to figure out all the sub problems needed for solving the given problem.
-Some programming languages can automatically memorize the result of a function call with a particular set of arguments, in order to speed up call-by-name. Some languages make it possible portably (e.g. Scheme, Common Lisp or Perl), some need special extensions.This is only possible for a referentially transparent function.
-
-</pre></pre>
-                </div>
                 <div class="text-content">
                     <pre><pre>
 In mathematics and computer science, dynamic programming is a method of solving problems, that exhibit the properties of overlapping subproblems and optimal substructure. The method takes much less time than naive methods.
@@ -310,12 +315,23 @@ In general, we can solve a problem with optimal substructure using a three-step 
 The subproblems are, themselves, solved by dividing them into sub-subproblems, and so on, until we reach some simple case that is solvable in constant time.
 </pre></pre>
                 </div>
+                <div class="text-content">
+                    <pre><pre>In mathematics and computer science, dynamic programming is a method of solving problems that exhibit the properties of overlapping sub problems and optimal substructure. The term was originally used in the 1940s by Richard Bellman to describe the process of solving problems where one needs to find the best decisions one after another. By 1953, he had refined this to the modern meaning. Bellman's contribution is remembered in the name of the Bellman equation, a central result of dynamic programming which restates an optimization problem in recursive form. <span style="background-color: yellow; color: #d3163b;">The word "programming" in "dynamic programming" has no particular connection to computer programming at all, and instead comes from the term "mathematical programming", a synonym for optimization. Thus, the "program" is the optimal plan for action that is produced. For instance, a finalized schedule of events at an exhibition is sometimes called a program. Programming, in this sense, means finding an acceptable plan of action, an algorithm.
+</span>Dynamic programming usually takes one of two approaches, the top-down approach, the problem is broken into sub problems, and these sub problems are solved and the solutions remembered, in case they need to be solved again. This is recursion and memorization combined together and the bottom-up approach, all sub problems that might be needed are solved in advance and then used to build up solutions to larger problems. This approach is slightly better in stack space and number of function calls, but it is sometimes not intuitive to figure out all the sub problems needed for solving the given problem.
+Some programming languages can automatically memorize the result of a function call with a particular set of arguments, in order to speed up call-by-name. Some languages make it possible portably (e.g. Scheme, Common Lisp or Perl), some need special extensions.This is only possible for a referentially transparent function.
+
+</pre></pre>
+                </div>
             </div>
         </div>
         <div class="container">
-            <description>g3pB_taske.txt vs g0pE_taske.txt</description>
-            <h2>Similitud: 0.22</h2>
+            <description>g0pE_taske.txt vs g3pB_taske.txt</description>
+            <h2>Similarity: 0.22</h2>
             <div class="text-container">
+                <div class="text-content">
+                    <pre><pre>dynamic programming is a method of solving problems that exhibit the properties of overlapping subproblems and optimal substructure (described below). The method takes much less time than naive methods. <span style="background-color: yellow; color: #d3163b;">The word "programming" in "dynamic programming" has no particular connection to computer programming at all, and instead comes from the term "mathematical programming", a synonym for optimization. </span>Thus, the "program" is the optimal plan for action that is produced. For instance, a finalized schedule of events at an exhibition is sometimes called a program. Programming, in this sense, means finding an acceptable plan of action, an algorithm. 
+</pre></pre>
+                </div>
                 <div class="text-content">
                     <pre><pre>Dynamic Programming is a method of solving problems that exhibit the properties of overlapping subproblems and optimal substructure.  The term was originally used in the 1940s by Richard Bellman.
 
@@ -324,10 +340,6 @@ The subproblems are, themselves, solved by dividing them into sub-subproblems, a
 For instance, a finalized schedule of events at an exhibition is sometimes called a program. Programming, in this sense, means finding an acceptable plan of action. 
 
 To say that a problem has overlapping subproblems is to say that the same subproblems are used to solve many different larger problems.  Optimal substructure means that optimal solutions of subproblems can be used to find the optimal solutions of the overall problem.</pre></pre>
-                </div>
-                <div class="text-content">
-                    <pre><pre>dynamic programming is a method of solving problems that exhibit the properties of overlapping subproblems and optimal substructure (described below). The method takes much less time than naive methods. <span style="background-color: yellow; color: #d3163b;">The word "programming" in "dynamic programming" has no particular connection to computer programming at all, and instead comes from the term "mathematical programming", a synonym for optimization. </span>Thus, the "program" is the optimal plan for action that is produced. For instance, a finalized schedule of events at an exhibition is sometimes called a program. Programming, in this sense, means finding an acceptable plan of action, an algorithm. 
-</pre></pre>
                 </div>
             </div>
         </div></body></html>

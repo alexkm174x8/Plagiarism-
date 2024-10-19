@@ -96,9 +96,20 @@ func generateHTML(pairs []TextPair) {
 <title>Plagiarism Detector</title>
 <style>
 
+@font-face {
+   font-family: Nohemi;
+   src: url("Nohemi-Medium.otf")
+}
+
+
+@font-face {
+   font-family: OffBit;
+   src: url("OffBit.ttf")
+}
+
 body {
    background-color: #ffa1d7;
-   font-family: Helvetica, sans-serif;
+   font-family: Nohemi;
    color: #d3163b;
    margin: 0;
    padding: 0;
@@ -110,14 +121,14 @@ body {
    margin: 20px auto;
    padding: 20px;
    border: 1px solid #d3163b;
-   background-color: #ffffff;
-   box-sizing: border-box; /* Ensure padding fits within width */
+   background-color: #fdf2f5;
+   box-sizing: border-box;
 }
 
 pre {
    border: 1px solid #d3163b;
    padding: 10px;
-   background-color: #f4f4f4;
+   background-color: #f8f7f8; 
    width: 100%;
    white-space: pre-wrap;
    word-wrap: break-word;
@@ -127,11 +138,12 @@ pre {
 h1 {
    font-size: 60px;
    text-align: center;
-   margin-top: 30px;
+   margin-top: 50px;
+   font-family: OffBit;
 }
 
 h2 {
-   margin-top: 0px;
+   margin-top: 5px;
    margin-bottom: 5px;
    font-size: 20px;
 }
@@ -148,7 +160,7 @@ description {
    margin-top: 0px;
    font-size: 25px;
    margin-bottom: 45px;
-   font-weight: bold;
+   font-family: OffBit;
 }
 
 .similarity-box {
@@ -156,7 +168,7 @@ description {
 }
 
 .text-container {
-   display: block; /* Stack the contents vertically */
+   display: block; 
 }
 
 .highlight {
@@ -166,19 +178,18 @@ description {
 </style>
 </head>
 <body>
-<h1>Plagiarism Detector</h1>
+<h1>Plagiarism Detector •*.✸ </h1>
 <h3 style="text-align: center;">Web App in Golang that compares the content of different texts about the same topic, calculating and highlighting their similarity using a Suffix Array that retrieves the Longest Common Substring (LCS).</h3>`
 
     for _, pair := range pairs {
-        // Split the highlighted string into two parts for each text
         splitIndex := strings.Index(pair.Highlighted, "</pre><pre>") + 6
-        firstText := pair.Highlighted[:splitIndex]   // Extract the first file's highlighted text
-        secondText := pair.Highlighted[splitIndex:]  // Extract the second file's highlighted text
+        firstText := pair.Highlighted[:splitIndex]   
+        secondText := pair.Highlighted[splitIndex:] 
 
         html += fmt.Sprintf(`
         <div class="container">
             <description>%s vs %s</description>
-            <h2>Similitud: %.2f</h2>
+            <h2>Similarity: %.2f</h2>
             <div class="text-container">
                 <div class="text-content">
                     <pre>%s</pre>
