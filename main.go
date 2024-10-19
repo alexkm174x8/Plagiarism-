@@ -1,11 +1,13 @@
 package main
 
+// Importación de paquetes necesarios para la funcionalidad del programa.
+// Cada paquete cumple una función esencial en la lectura, manipulación y procesamiento de archivos y cadenas.
 import (
-	"fmt"
-	"io/ioutil"
-	"log"
-	"path/filepath"
-	"strings"
+	"fmt"           // Proporciona funciones para formatear y mostrar datos en la consola.
+	"io/ioutil"     // Permite realizar operaciones de entrada y salida, como leer y escribir archivos.
+	"log"           // Facilita la creación de registros de eventos, especialmente para manejar errores.
+	"path/filepath" // Proporciona funciones para manipular rutas de archivos de forma independiente del sistema operativo.
+	"strings"       // Incluye funciones para la manipulación de cadenas de texto, como la búsqueda, reemplazo y segmentación.
 )
 
 // Función para leer los archivos de texto desde una carpeta
