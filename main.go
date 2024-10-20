@@ -26,21 +26,53 @@ func readFilesFromDir(dirPath string) (map[string]string, error) {
 		if err != nil {
 			log.Fatalf("Error leyendo archivo %s: %v", file, err)
 		}
-        processedContent := preprocessText(string(content))
+		processedContent := preprocessText(string(content))
 		texts[file] = processedContent
 	}
 	return texts, nil
 }
 
-// Función para preprocesar el texto: elimina saltos de línea, tabulaciones y retornos de carro, pero mantiene los espacios
+// Función para preprocesar el texto: convierte a minúsculas, elimina acentos, saltos de línea, tabulaciones y retornos de carro
 func preprocessText(text string) string {
-    // Elimina saltos de línea, retornos de carro y tabulaciones
-    cleaned := strings.ReplaceAll(text, "\n", "")   // Elimina saltos de línea
-    cleaned = strings.ReplaceAll(cleaned, "\r", "") // Elimina retornos de carro
-    cleaned = strings.ReplaceAll(cleaned, "\t", "") // Elimina tabulaciones
-    cleaned = strings.TrimSpace(cleaned)            // Elimina espacios al inicio y al final (pero conserva los espacios dentro del texto)
-    
-    return cleaned
+	// Convierte a minúsculas
+	text = strings.ToLower(text)
+
+	// Elimina acentos
+	text = removeAccents(text)
+
+	// Elimina saltos de línea, retornos de carro y tabulaciones
+	text = strings.ReplaceAll(text, "\n", "") // Elimina saltos de línea
+	text = strings.ReplaceAll(text, "\r", "") // Elimina retornos de carro
+	text = strings.ReplaceAll(text, "\t", "") // Elimina tabulaciones
+	text = strings.TrimSpace(text)            // Elimina espacios al inicio y al final (pero conserva los espacios dentro del texto)
+
+	return text
+}
+
+// Función para eliminar acentos de caracteres
+func removeAccents(text string) string {
+	var result strings.Builder
+	result.Grow(len(text)) // Optimiza la capacidad inicial del buffer
+
+	for _, char := range text {
+		switch char {
+		case 'á':
+			result.WriteRune('a')
+		case 'é':
+			result.WriteRune('e')
+		case 'í':
+			result.WriteRune('i')
+		case 'ó':
+			result.WriteRune('o')
+		case 'ú':
+			result.WriteRune('u')
+		case 'ñ':
+			result.WriteRune('n')
+		default:
+			result.WriteRune(char)
+		}
+	}
+	return result.String()
 }
 
 // Implementación de Merge Sort para ordenar sufijos lexicográficamente
@@ -55,8 +87,6 @@ func mergeSortSuffixes(suffixes []string) []string {
 
 	return merge(left, right)
 }
-
-
 
 // Función auxiliar para mezclar dos sublistas en orden lexicográfico
 func merge(left, right []string) []string {
@@ -148,37 +178,36 @@ func commonPrefix(s1, s2 string) string {
 // Función para eliminar la subcadena común más larga de ambos textos
 // Continúa buscando y eliminando subcadenas comunes más largas de 5 caracteres hasta que ya no se encuentren
 func removeLongestSubstrings(text1, text2 string) ([]string, string, string) {
-    removedSubstrings := []string{}
-    
-    // Bucle para encontrar y eliminar subcadenas comunes de longitud mayor a 5
-    for {
-        lcs, lcsLength := longestCommonSubstring(text1, text2)
-        
-        // Detener el bucle si la subcadena más larga tiene 5 caracteres o menos
-        if lcsLength <= 5 {
-            break
-        }
-        
-        // Almacenar la subcadena eliminada
-        removedSubstrings = append(removedSubstrings, lcs)
-        
-        // Eliminar todas las ocurrencias de la subcadena de ambos textos
-        text1 = strings.ReplaceAll(text1, lcs, "")
-        text2 = strings.ReplaceAll(text2, lcs, "")
-    }
-    
-    return removedSubstrings, text1, text2
-}
+	removedSubstrings := []string{}
 
+	// Bucle para encontrar y eliminar subcadenas comunes de longitud mayor a 5
+	for {
+		lcs, lcsLength := longestCommonSubstring(text1, text2)
+
+		// Detener el bucle si la subcadena más larga tiene 5 caracteres o menos
+		if lcsLength <= 5 {
+			break
+		}
+
+		// Almacenar la subcadena eliminada
+		removedSubstrings = append(removedSubstrings, lcs)
+
+		// Eliminar todas las ocurrencias de la subcadena de ambos textos
+		text1 = strings.ReplaceAll(text1, lcs, "")
+		text2 = strings.ReplaceAll(text2, lcs, "")
+	}
+
+	return removedSubstrings, text1, text2
+}
 
 // Función para resaltar la subcadena común más larga con HTML y CSS
 // Reemplaza la subcadena común con una versión resaltada usando HTML
 func highlightCommonSubstrings(text string, commonSubstrings []string) string {
-    highlighted := text
-    for _, substr := range commonSubstrings {
-        highlighted = strings.ReplaceAll(highlighted, substr, `<span style="background-color: yellow; color: #d3163b;">`+substr+`</span>`)
-    }
-    return highlighted
+	highlighted := text
+	for _, substr := range commonSubstrings {
+		highlighted = strings.ReplaceAll(highlighted, substr, `<span style="background-color: yellow; color: #d3163b;">`+substr+`</span>`)
+	}
+	return highlighted
 }
 
 // Estructura para almacenar la similitud y los pares de textos
@@ -355,45 +384,45 @@ description {
 
 // Función para calcular la similitud y generar los pares de texto
 func calculateSimilarityAndHighlight(texts map[string]string) {
-    keys := make([]string, 0, len(texts))
-    for key := range texts {
-        keys = append(keys, key)
-    }
-    var pairs []TextPair
-    for i := 0; i < len(keys); i++ {
-        for j := i + 1; j < len(keys); j++ {
-            text1 := texts[keys[i]]
-            text2 := texts[keys[j]]
+	keys := make([]string, 0, len(texts))
+	for key := range texts {
+		keys = append(keys, key)
+	}
+	var pairs []TextPair
+	for i := 0; i < len(keys); i++ {
+		for j := i + 1; j < len(keys); j++ {
+			text1 := texts[keys[i]]
+			text2 := texts[keys[j]]
 
-            // Remove longest substrings iteratively and collect them
-            removedSubstrings, finalText1, finalText2 := removeLongestSubstrings(text1, text2)
-            
-            // Calculate similarity based on removed substrings
-            totalCommonLength := 0
-            for _, common := range removedSubstrings {
-                totalCommonLength += len(common)
-            }
-            
-            longestLength := max(len(finalText1), len(finalText2))
-            similarity := float64(totalCommonLength) / float64(longestLength)
-            
-            highlightedText1 := highlightCommonSubstrings(text1, removedSubstrings)
-            highlightedText2 := highlightCommonSubstrings(text2, removedSubstrings)
+			// Remove longest substrings iteratively and collect them
+			removedSubstrings, finalText1, finalText2 := removeLongestSubstrings(text1, text2)
 
-            pairs = append(pairs, TextPair{
-                File1:       keys[i],
-                File2:       keys[j],
-                Similarity:  similarity,
-                Highlighted: fmt.Sprintf("<pre>%s</pre><pre>%s</pre>", highlightedText1, highlightedText2),
-            })
-        }
-    }
-    sortedPairs := mergeSortPairs(pairs)
+			// Calculate similarity based on removed substrings
+			totalCommonLength := 0
+			for _, common := range removedSubstrings {
+				totalCommonLength += len(common)
+			}
 
-    if len(sortedPairs) > 10 {
-        sortedPairs = sortedPairs[:10]
-    }
-    generateHTML(sortedPairs)
+			longestLength := max(len(finalText1), len(finalText2))
+			similarity := float64(totalCommonLength) / float64(longestLength)
+
+			highlightedText1 := highlightCommonSubstrings(text1, removedSubstrings)
+			highlightedText2 := highlightCommonSubstrings(text2, removedSubstrings)
+
+			pairs = append(pairs, TextPair{
+				File1:       keys[i],
+				File2:       keys[j],
+				Similarity:  similarity,
+				Highlighted: fmt.Sprintf("<pre>%s</pre><pre>%s</pre>", highlightedText1, highlightedText2),
+			})
+		}
+	}
+	sortedPairs := mergeSortPairs(pairs)
+
+	if len(sortedPairs) > 10 {
+		sortedPairs = sortedPairs[:10]
+	}
+	generateHTML(sortedPairs)
 }
 
 // Función auxiliar para obtener el máximo de dos enteros
