@@ -56,6 +56,8 @@ func mergeSortSuffixes(suffixes []string) []string {
 	return merge(left, right)
 }
 
+
+
 // Función auxiliar para mezclar dos sublistas en orden lexicográfico
 func merge(left, right []string) []string {
 	result := []string{}
@@ -143,11 +145,40 @@ func commonPrefix(s1, s2 string) string {
 	return s1[:n]
 }
 
+// Función para eliminar la subcadena común más larga de ambos textos
+// Continúa buscando y eliminando subcadenas comunes más largas de 5 caracteres hasta que ya no se encuentren
+func removeLongestSubstrings(text1, text2 string) ([]string, string, string) {
+    removedSubstrings := []string{}
+    
+    // Bucle para encontrar y eliminar subcadenas comunes de longitud mayor a 5
+    for {
+        lcs, lcsLength := longestCommonSubstring(text1, text2)
+        
+        // Detener el bucle si la subcadena más larga tiene 5 caracteres o menos
+        if lcsLength <= 5 {
+            break
+        }
+        
+        // Almacenar la subcadena eliminada
+        removedSubstrings = append(removedSubstrings, lcs)
+        
+        // Eliminar todas las ocurrencias de la subcadena de ambos textos
+        text1 = strings.ReplaceAll(text1, lcs, "")
+        text2 = strings.ReplaceAll(text2, lcs, "")
+    }
+    
+    return removedSubstrings, text1, text2
+}
+
+
 // Función para resaltar la subcadena común más larga con HTML y CSS
 // Reemplaza la subcadena común con una versión resaltada usando HTML
-func highlightCommonSubstring(text, commonSubstring string) string {
-	highlighted := strings.Replace(text, commonSubstring, `<span style="background-color: yellow; color: #d3163b;">`+commonSubstring+`</span>`, -1)
-	return highlighted
+func highlightCommonSubstrings(text string, commonSubstrings []string) string {
+    highlighted := text
+    for _, substr := range commonSubstrings {
+        highlighted = strings.ReplaceAll(highlighted, substr, `<span style="background-color: yellow; color: #d3163b;">`+substr+`</span>`)
+    }
+    return highlighted
 }
 
 // Estructura para almacenar la similitud y los pares de textos
@@ -323,38 +354,46 @@ description {
 }
 
 // Función para calcular la similitud y generar los pares de texto
-// Compara todos los textos entre sí y genera una matriz de similitud con los 10 pares más similares
 func calculateSimilarityAndHighlight(texts map[string]string) {
-	keys := make([]string, 0, len(texts))
-	for key := range texts {
-		keys = append(keys, key)
-	}
-	var pairs []TextPair
-	for i := 0; i < len(keys); i++ {
-		for j := i + 1; j < len(keys); j++ {
-			text1 := texts[keys[i]]
-			text2 := texts[keys[j]]
-			lcs, lcsLength := longestCommonSubstring(text1, text2)
-			longestLength := max(len(text1), len(text2))
-			similarity := float64(lcsLength) / float64(longestLength)
-			highlightedText1 := highlightCommonSubstring(text1, lcs)
-			highlightedText2 := highlightCommonSubstring(text2, lcs)
-			pairs = append(pairs, TextPair{
-				File1:       keys[i],
-				File2:       keys[j],
-				Similarity:  similarity,
-				Highlighted: fmt.Sprintf("<pre>%s</pre><pre>%s</pre>", highlightedText1, highlightedText2),
-			})
-		}
-	}
-	// Ordenamos los pares por similitud utilizando Merge Sort
-	sortedPairs := mergeSortPairs(pairs)
+    keys := make([]string, 0, len(texts))
+    for key := range texts {
+        keys = append(keys, key)
+    }
+    var pairs []TextPair
+    for i := 0; i < len(keys); i++ {
+        for j := i + 1; j < len(keys); j++ {
+            text1 := texts[keys[i]]
+            text2 := texts[keys[j]]
 
-	// Tomamos los 10 pares más similares
-	if len(sortedPairs) > 10 {
-		sortedPairs = sortedPairs[:10]
-	}
-	generateHTML(sortedPairs)
+            // Remove longest substrings iteratively and collect them
+            removedSubstrings, finalText1, finalText2 := removeLongestSubstrings(text1, text2)
+            
+            // Calculate similarity based on removed substrings
+            totalCommonLength := 0
+            for _, common := range removedSubstrings {
+                totalCommonLength += len(common)
+            }
+            
+            longestLength := max(len(finalText1), len(finalText2))
+            similarity := float64(totalCommonLength) / float64(longestLength)
+            
+            highlightedText1 := highlightCommonSubstrings(text1, removedSubstrings)
+            highlightedText2 := highlightCommonSubstrings(text2, removedSubstrings)
+
+            pairs = append(pairs, TextPair{
+                File1:       keys[i],
+                File2:       keys[j],
+                Similarity:  similarity,
+                Highlighted: fmt.Sprintf("<pre>%s</pre><pre>%s</pre>", highlightedText1, highlightedText2),
+            })
+        }
+    }
+    sortedPairs := mergeSortPairs(pairs)
+
+    if len(sortedPairs) > 10 {
+        sortedPairs = sortedPairs[:10]
+    }
+    generateHTML(sortedPairs)
 }
 
 // Función auxiliar para obtener el máximo de dos enteros
