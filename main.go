@@ -26,9 +26,21 @@ func readFilesFromDir(dirPath string) (map[string]string, error) {
 		if err != nil {
 			log.Fatalf("Error leyendo archivo %s: %v", file, err)
 		}
-		texts[file] = string(content)
+        processedContent := preprocessText(string(content))
+		texts[file] = processedContent
 	}
 	return texts, nil
+}
+
+// Función para preprocesar el texto: elimina saltos de línea, tabulaciones y retornos de carro, pero mantiene los espacios
+func preprocessText(text string) string {
+    // Elimina saltos de línea, retornos de carro y tabulaciones
+    cleaned := strings.ReplaceAll(text, "\n", "")   // Elimina saltos de línea
+    cleaned = strings.ReplaceAll(cleaned, "\r", "") // Elimina retornos de carro
+    cleaned = strings.ReplaceAll(cleaned, "\t", "") // Elimina tabulaciones
+    cleaned = strings.TrimSpace(cleaned)            // Elimina espacios al inicio y al final (pero conserva los espacios dentro del texto)
+    
+    return cleaned
 }
 
 // Implementación de Merge Sort para ordenar sufijos lexicográficamente
