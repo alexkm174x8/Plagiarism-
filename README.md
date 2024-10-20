@@ -44,5 +44,6 @@ Estefanía desarrolló la **base del código para la implementación del Longest
 
 Miranda trabajó en la **presentación de los resultados** de la comparación de textos en el frontend del reporte HTML. Además, diseñó las **funciones en Golang para el preprocesamiento** y la **eliminación de subcadenas**, optimizando los resultados generales del programa y mejorando su precisión.
 
+### Conclusiones
 
 Este proyecto ofrece una solución eficiente para la detección de plagio, combinando algoritmos de procesamiento de cadenas y una presentación visual clara. La herramienta es valiosa para ámbitos académicos y profesionales donde el plagio es una preocupación creciente.
