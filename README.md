@@ -44,20 +44,5 @@ Estefanía desarrolló la **base del código para la implementación del Longest
 
 Miranda trabajó en la **presentación de los resultados** de la comparación de textos en el frontend del reporte HTML. Además, diseñó las **funciones en Golang para el preprocesamiento** y la **eliminación de subcadenas**, optimizando los resultados generales del programa y mejorando su precisión.
 
-## Reflexiones
-
-### Estefanía Antonio Villaseca
-
-Este proyecto me ayudó a desarrollar habilidades en el uso de estructuras de datos avanzadas y a aplicar buenas prácticas de programación para asegurar un código escalable y mantenible.
-
-### Miranda Eugenia Colorado Arróniz
-
-Me enfoqué en mejorar la experiencia del usuario y optimizar el cálculo de similitud, incluyendo preprocesamiento de texto y visualización de resultados.
-
-### Alejandro Kong Montoya
-
-Logramos implementar una solución eficiente que destaca visualmente las coincidencias en un informe HTML. En el futuro, se podrían integrar algoritmos adicionales como el **FM-Index** para mejorar el rendimiento.
-
-## Conclusión
 
 Este proyecto ofrece una solución eficiente para la detección de plagio, combinando algoritmos de procesamiento de cadenas y una presentación visual clara. La herramienta es valiosa para ámbitos académicos y profesionales donde el plagio es una preocupación creciente.
