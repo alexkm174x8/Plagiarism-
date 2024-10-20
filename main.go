@@ -32,47 +32,15 @@ func readFilesFromDir(dirPath string) (map[string]string, error) {
 	return texts, nil
 }
 
-// Función para preprocesar el texto: convierte a minúsculas, elimina acentos, saltos de línea, tabulaciones y retornos de carro
+// Función para preprocesar el texto: elimina saltos de línea, tabulaciones y retornos de carro, pero mantiene los espacios
 func preprocessText(text string) string {
-	// Convierte a minúsculas
-	text = strings.ToLower(text)
-
-	// Elimina acentos
-	text = removeAccents(text)
-
 	// Elimina saltos de línea, retornos de carro y tabulaciones
-	text = strings.ReplaceAll(text, "\n", "") // Elimina saltos de línea
-	text = strings.ReplaceAll(text, "\r", "") // Elimina retornos de carro
-	text = strings.ReplaceAll(text, "\t", "") // Elimina tabulaciones
-	text = strings.TrimSpace(text)            // Elimina espacios al inicio y al final (pero conserva los espacios dentro del texto)
+	cleaned := strings.ReplaceAll(text, "\n", "")   // Elimina saltos de línea
+	cleaned = strings.ReplaceAll(cleaned, "\r", "") // Elimina retornos de carro
+	cleaned = strings.ReplaceAll(cleaned, "\t", "") // Elimina tabulaciones
+	cleaned = strings.TrimSpace(cleaned)            // Elimina espacios al inicio y al final (pero conserva los espacios dentro del texto)
 
-	return text
-}
-
-// Función para eliminar acentos de caracteres
-func removeAccents(text string) string {
-	var result strings.Builder
-	result.Grow(len(text)) // Optimiza la capacidad inicial del buffer
-
-	for _, char := range text {
-		switch char {
-		case 'á':
-			result.WriteRune('a')
-		case 'é':
-			result.WriteRune('e')
-		case 'í':
-			result.WriteRune('i')
-		case 'ó':
-			result.WriteRune('o')
-		case 'ú':
-			result.WriteRune('u')
-		case 'ñ':
-			result.WriteRune('n')
-		default:
-			result.WriteRune(char)
-		}
-	}
-	return result.String()
+	return cleaned
 }
 
 // Implementación de Merge Sort para ordenar sufijos lexicográficamente
@@ -394,18 +362,23 @@ func calculateSimilarityAndHighlight(texts map[string]string) {
 			text1 := texts[keys[i]]
 			text2 := texts[keys[j]]
 
-			// Remove longest substrings iteratively and collect them
-			removedSubstrings, finalText1, finalText2 := removeLongestSubstrings(text1, text2)
+			// Guardamos las longitudes originales de ambos textos
+			originalLength1 := len(text1)
+			originalLength2 := len(text2)
 
-			// Calculate similarity based on removed substrings
+			// Remove longest substrings iteratively and collect them
+			removedSubstrings, _, _ := removeLongestSubstrings(text1, text2)
+
+			// Calcular la longitud total de subcadenas comunes eliminadas
 			totalCommonLength := 0
 			for _, common := range removedSubstrings {
 				totalCommonLength += len(common)
 			}
 
-			longestLength := max(len(finalText1), len(finalText2))
-			similarity := float64(totalCommonLength) / float64(longestLength)
+			// Calcular la similitud dividiendo la longitud común por la suma de las longitudes originales
+			similarity := float64(totalCommonLength) / float64(max(originalLength1, originalLength2))
 
+			// Resaltar las subcadenas comunes en ambos textos
 			highlightedText1 := highlightCommonSubstrings(text1, removedSubstrings)
 			highlightedText2 := highlightCommonSubstrings(text2, removedSubstrings)
 
