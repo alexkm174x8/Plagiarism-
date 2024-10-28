@@ -34,6 +34,7 @@ func readFilesFromDir(dirPath string) (map[string]string, error) {
 
 // Función para preprocesar el texto: elimina saltos de línea, tabulaciones y retornos de carro, pero mantiene los espacios
 func preprocessText(text string) string {
+	text = strings.ToLower(text)
 	// Elimina saltos de línea, retornos de carro y tabulaciones
 	cleaned := strings.ReplaceAll(text, "\n", "")   // Elimina saltos de línea
 	cleaned = strings.ReplaceAll(cleaned, "\r", "") // Elimina retornos de carro
@@ -153,7 +154,7 @@ func removeLongestSubstrings(text1, text2 string) ([]string, string, string) {
 		lcs, lcsLength := longestCommonSubstring(text1, text2)
 
 		// Detener el bucle si la subcadena más larga tiene 5 caracteres o menos
-		if lcsLength <= 5 {
+		if lcsLength <= 3 {
 			break
 		}
 
