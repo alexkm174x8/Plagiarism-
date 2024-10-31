@@ -1,13 +1,13 @@
 package main
 
 // Importación de paquetes necesarios para la funcionalidad del programa.
-// Cada paquete cumple una función esencial en la lectura, manipulación y procesamiento de archivos y cadenas.
+
 import (
-	"fmt"           // Proporciona funciones para formatear y mostrar datos en la consola.
-	"io/ioutil"     // Permite realizar operaciones de entrada y salida, como leer y escribir archivos.
-	"log"           // Facilita la creación de registros de eventos, especialmente para manejar errores.
-	"path/filepath" // Proporciona funciones para manipular rutas de archivos de forma independiente del sistema operativo.
-	"strings"       // Incluye funciones para la manipulación de cadenas de texto, como la búsqueda, reemplazo y segmentación.
+	"fmt"
+	"io/ioutil"
+	"log"
+	"path/filepath"
+	"strings"
 )
 
 // Función para leer los archivos de texto desde una carpeta
@@ -32,15 +32,14 @@ func readFilesFromDir(dirPath string) (map[string]string, error) {
 	return texts, nil
 }
 
-// Función para preprocesar el texto: elimina saltos de línea, tabulaciones y retornos de carro, pero mantiene los espacios
 func preprocessText(text string) string {
 	text = strings.ToLower(text)
 	// Elimina saltos de línea, retornos de carro y tabulaciones
-	cleaned := strings.ReplaceAll(text, "\n", "")   // Elimina saltos de línea
-	cleaned = strings.ReplaceAll(cleaned, "\r", "") // Elimina retornos de carro
-	cleaned = strings.ReplaceAll(cleaned, "\t", "") // Elimina tabulaciones
-	cleaned = strings.TrimSpace(cleaned)            // Elimina espacios al inicio y al final (pero conserva los espacios dentro del texto)
-
+	cleaned := strings.ReplaceAll(text, "\n", " ")
+	cleaned = strings.ReplaceAll(cleaned, "\r", " ")
+	cleaned = strings.ReplaceAll(cleaned, "\t", " ")
+	// Reemplaza múltiples espacios por uno solo
+	cleaned = strings.Join(strings.Fields(cleaned), " ")
 	return cleaned
 }
 
@@ -329,10 +328,10 @@ description {
             <h2>Similarity: %.2f%%</h2>
             <div class="text-container">
                 <div class="text-content">
-                    <pre>%s</pre>
+                    %s
                 </div>
                 <div class="text-content">
-                    <pre>%s</pre>
+                    %s
                 </div>
             </div>
         </div>`,
@@ -351,15 +350,22 @@ description {
 	fmt.Println("Archivo HTML generado: plagiarism_report.html")
 }
 
-// Función para calcular la similitud y generar los pares de texto
+// Función para calcular la similitud y generar los pares de texto usando una matriz de similitud
 func calculateSimilarityAndHighlight(texts map[string]string) {
 	keys := make([]string, 0, len(texts))
 	for key := range texts {
 		keys = append(keys, key)
 	}
-	var pairs []TextPair
-	for i := 0; i < len(keys); i++ {
-		for j := i + 1; j < len(keys); j++ {
+	N := len(keys)
+	// Crear matriz de similitud
+	similarityMatrix := make([][]float64, N)
+	highlightedMatrix := make([][]string, N)
+	for i := 0; i < N; i++ {
+		similarityMatrix[i] = make([]float64, N)
+		highlightedMatrix[i] = make([]string, N)
+	}
+	for i := 0; i < N; i++ {
+		for j := i + 1; j < N; j++ {
 			text1 := texts[keys[i]]
 			text2 := texts[keys[j]]
 
@@ -367,7 +373,7 @@ func calculateSimilarityAndHighlight(texts map[string]string) {
 			originalLength1 := len(text1)
 			originalLength2 := len(text2)
 
-			// Remove longest substrings iteratively and collect them
+			// Eliminar las subcadenas comunes más largas iterativamente y recogerlas
 			removedSubstrings, _, _ := removeLongestSubstrings(text1, text2)
 
 			// Calcular la longitud total de subcadenas comunes eliminadas
@@ -383,19 +389,34 @@ func calculateSimilarityAndHighlight(texts map[string]string) {
 			highlightedText1 := highlightCommonSubstrings(text1, removedSubstrings)
 			highlightedText2 := highlightCommonSubstrings(text2, removedSubstrings)
 
+			// Almacenar la similitud y los textos resaltados en la matriz
+			similarityMatrix[i][j] = similarity
+			highlightedMatrix[i][j] = fmt.Sprintf("<pre>%s</pre><pre>%s</pre>", highlightedText1, highlightedText2)
+		}
+	}
+
+	// Recolectar los pares de la matriz de similitud
+	var pairs []TextPair
+	for i := 0; i < N; i++ {
+		for j := i + 1; j < N; j++ {
 			pairs = append(pairs, TextPair{
 				File1:       keys[i],
 				File2:       keys[j],
-				Similarity:  similarity,
-				Highlighted: fmt.Sprintf("<pre>%s</pre><pre>%s</pre>", highlightedText1, highlightedText2),
+				Similarity:  similarityMatrix[i][j],
+				Highlighted: highlightedMatrix[i][j],
 			})
 		}
 	}
+
+	// Ordenar los pares
 	sortedPairs := mergeSortPairs(pairs)
 
+	// Si hay más de 10 pares, mantener los 10 primeros
 	if len(sortedPairs) > 10 {
 		sortedPairs = sortedPairs[:10]
 	}
+
+	// Generar el informe HTML
 	generateHTML(sortedPairs)
 }
 
